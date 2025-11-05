@@ -4,12 +4,16 @@ import path from "path";
 import ProductController from "./src/controllers/product.controller.js";
 const server = express();
 server.use(ejsLayouts);
+//parse form data
+server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
 server.set("view engine", "ejs"); //setting the ejs view engine
 server.set("views", path.join(path.resolve(), "src", "views"));
 server.use(express.static("src/views"));
 const productController = new ProductController();
 server.get("/", productController.getproducts);
-
+server.get("/new", productController.getAddForm);
+server.post("/", productController.addNewProduct);
 server.listen(3000, () => {
   console.log(`Server is listening on http://localhost:3000/`);
 });

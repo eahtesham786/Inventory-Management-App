@@ -10,4 +10,16 @@ export default class ProductController {
     // return res.sendFile(finalpath);
     res.render("products", { products: products });
   }
+  getAddForm(req, res) {
+    //controller method to return the form (to see the form)
+    return res.render("new-product", {}); //no data to send here, also it is optional attribute
+  }
+  addNewProduct(req, res) {
+    //access the data when form is submitted
+    console.log(req.body);
+    ProductModel.add(req.body);
+    let products = ProductModel.get();
+    res.render("products", { products: products }); //after adding we need to come back to product page
+    //eturn res.send();
+  }
 }
