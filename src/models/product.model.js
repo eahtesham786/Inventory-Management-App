@@ -10,13 +10,13 @@ export default class ProductModel {
   static get() {
     return products;
   }
-  static add(productObj) {
+  static add(name, desc, price, imageUrl) {
     let newProduct = new ProductModel(
       products.length + 1,
-      productObj.name,
-      productObj.desc,
-      productObj.price,
-      productObj.imageUrl
+      name,
+      desc,
+      price,
+      imageUrl
     );
     products.push(newProduct);
   }
@@ -25,7 +25,11 @@ export default class ProductModel {
   }
   static update(productObj) {
     const index = products.findIndex((p) => p.id == productObj.id); //where id of product matches with id of the passed object
-    products[index] = productObj; //on that particular index replace value with the particular object
+    //on that particular index replace value with the particular object
+    products[index] = {
+      ...products[index], // keep old fields
+      ...productObj, // replace only updated fields
+    };
   }
   static delete(id) {
     const index = products.findIndex((p) => p.id == id);

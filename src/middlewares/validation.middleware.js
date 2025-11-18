@@ -29,8 +29,16 @@ const validateRequest = async (req, res, next) => {
     body("price")
       .isFloat({ gt: 0 })
       .withMessage("Price should be positive value."),
-    body("imageUrl").isURL().withMessage("Invalid URL"),
+    body("file").custom((value, { req }) => {
+      if (!req.file) {
+        throw new Error("Image is required."); //if file is empty
+      }
+      return true; //if file is not empty, then return true
+    }),
   ];
+  //body("imageUrl").isURL().withMessage("Invalid URL"),
+  // //this should now expect a file instead of url since we added filupload  midlleware
+
   await Promise.all(rules.map((rule) => rule.run(req)));
   var errors = validationResult(req);
   console.log(errors);
